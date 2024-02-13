@@ -13,8 +13,10 @@ class TasksController < ApplicationController
           render :new
       else
           if @task.save
-              redirect_to tasks_path,notice: 'Taskの作成に成功しました'
+              flash[:notice] = 'Taskの投稿に成功しました'
+              redirect_to tasks_path
           else
+              flash.now[:alert] = 'Taskの投稿に失敗しました'
               render :new
           end
       end
@@ -31,8 +33,10 @@ class TasksController < ApplicationController
   def update
       @task = Task.find(params[:id])
       if @task.update(task_params)
-          redirect_to tasks_path,notice: 'Taskを編集しました'
+          flash[:notice] = 'Taskを編集しました'
+          redirect_to tasks_path
       else
+          flash.now[:alert] = 'Taskの編集に失敗しました'
           render :edit
       end
   end
