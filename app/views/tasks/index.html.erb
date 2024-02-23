@@ -6,6 +6,7 @@
         <th>タイトル</th>
         <th>内容</th>
         <th>終了期限</th>
+        <th>ステータス</th>
     </tr>
     
     <% @tasks.each do |task| %>
@@ -14,6 +15,7 @@
         <td><%= task.title %></td>
         <td><%= task.content %></td>
         <td><%= task.deadline %></td>
+        <td><%= task.status %></td>
         <td><%= link_to '詳細',task_path(task.id) %></td>
         <td><%= link_to '編集',edit_task_path(task.id) %></td>
         <td><%= link_to '削除',task_path(task.id),method: :delete,data: { confirm: '本当に削除してよろしいですか？'} %></td>
