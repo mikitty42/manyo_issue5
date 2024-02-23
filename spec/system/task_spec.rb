@@ -6,9 +6,11 @@ RSpec.describe 'タスク管理機能', type: :system do
           visit new_task_path
           fill_in 'タイトル', with: 'test1'
           fill_in '内容',with: 'test1'
+          fill_in 'Deadline', with: '002024-05-01'
           click_on '登録する'
           expect(page).to have_content 'test1'
           expect(page).to have_content 'test1'
+          expect(page).to have_content '2024-05-01'
       end
     end
   end
@@ -24,10 +26,11 @@ RSpec.describe 'タスク管理機能', type: :system do
   describe '詳細表示機能' do
      context '任意のタスク詳細画面に遷移した場合' do
        it '該当タスクの内容が表示される' do
-           @task =FactoryBot.create(:task,title: 'test2',content: 'test2')
+           @task =FactoryBot.create(:task,title: 'test2',content: 'test3',deadline: '2024-04-02')
            visit task_path(@task.id)
            expect(page).to have_content 'test2'
-           expect(page).to have_content 'test2'
+           expect(page).to have_content 'test3'
+           expect(page).to have_content '2024-04-02'
        end
      end
   end
@@ -40,6 +43,17 @@ RSpec.describe 'タスク管理機能', type: :system do
             task = all('.task_list')
             task_0 = task[0]
             expect(task_0).to have_content "task3"
+      end
+    end
+  context '終了期限でソートする場合' do
+        it '新しい終了期限が一番上に表示される' do
+            FactoryBot.create(:task,deadline: '2024-03-01')
+            FactoryBot.create(:task,deadline:'2024-04-01')
+            FactoryBot.create(:task,deadline: '2024-02-01')
+            visit tasks_path
+            task = all('.task_list')
+            task_0 = task[0]
+            expect(task_0).to have_content "2024-04-01"
       end
     end
 end

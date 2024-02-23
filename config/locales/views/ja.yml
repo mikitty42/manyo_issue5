@@ -16,15 +16,23 @@ ja:
     index:
       title: 'タイトル'
       content: '内容'
+      deadline: '終了期限'
     new:
       title: 'タイトル'
       content: '内容'
+      deadline: '終了期限'
     edit:
       title: 'タイトル'
       content: '内容'
+      deadline: '終了期限'
     confirm:
       title: 'タイトル'
       content: '内容'
+      deadline: '終了期限'
+    _form:
+      title: 'タイトル'
+      content: '内容'
+      deadline: '終了期限'
   profiles:
     show:
       title: 'プロフィール'

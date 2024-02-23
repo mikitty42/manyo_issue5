@@ -22,7 +22,7 @@
     </div>
     
     <div class='task_deadline'>
-        <%= form.label :deadline %>
+        <%= form.label :deadline,Task.human_attribute_name(:deadline) %>
         <%= form.date_field :deadline %>
     </div>
     
