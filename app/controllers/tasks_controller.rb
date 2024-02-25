@@ -1,10 +1,18 @@
 class TasksController < ApplicationController
   def index
+      @tasks = Task.all.order(created_at: "DESC")
       if params[:sort_expired]
           @tasks = Task.all.order(deadline: "DESC")
-      else
-      @tasks = Task.all.order(created_at: "DESC")
-    end
+      end
+      if params[:task].present?
+          if params[:task][:title].present? && params[:task][:status].present?
+              @tasks = @tasks.get_by_title(params[:task][:title]).get_by_status(params[:task][:status])
+          elsif params[:task][:title].present?
+              @tasks = @tasks.get_by_title(params[:task][:title])
+          elsif params[:task][:status].present?
+              @tasks = @tasks.get_by_status(params[:task][:status])
+          end
+      end
   end
 
   def new
