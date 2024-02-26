@@ -3,6 +3,8 @@ class TasksController < ApplicationController
       @tasks = Task.all.order(created_at: "DESC")
       if params[:sort_expired]
           @tasks = Task.all.order(deadline: "DESC")
+      else
+          @tasks = Task.all.order(priority: "ASC")
       end
       if params[:task].present?
           if params[:task][:title].present? && params[:task][:status].present?
@@ -68,6 +70,6 @@ class TasksController < ApplicationController
   private
   
   def task_params
-      params.require(:task).permit(:title,:content,:deadline,:status)
+      params.require(:task).permit(:title,:content,:deadline,:status,:priority)
   end
 end
