@@ -1,13 +1,13 @@
 <h2>Task一覧画面</h2>
 <div class="task_list">
-<%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %>
-<%= link_to "優先順位でソートする", tasks_path(sort_priority: "true") %>
+<button type="button" class="btn btn-outline-info"><%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %></button>
+<button type="button" class="btn btn-outline-primary"><%= link_to "優先順位でソートする", tasks_path(sort_priority: "true") %></button>
 <%= form_with(url: tasks_path,scope: :task,local: true,method: :get) do |form| %>
     <%= form.text_field :title, placeholder: "投稿を検索する" %>
     <%= form.select :status, Task.statuses.keys.to_a,include_blank: true %>
     <%= form.submit "検索" %>
 <% end %>
-<table>
+<table class="table table-striped">
     <tr>
         <th>タイトル</th>
         <th>内容</th>
@@ -24,11 +24,11 @@
         <td><%= task.deadline %></td>
         <td><%= task.status %></td>
         <td><%= task.priority %></td>
-        <td><%= link_to '詳細',task_path(task.id) %></td>
-        <td><%= link_to '編集',edit_task_path(task.id) %></td>
-        <td><%= link_to '削除',task_path(task.id),method: :delete,data: { confirm: '本当に削除してよろしいですか？'} %></td>
+        <td><button type="button" class="btn btn-outline-primary"><%= link_to '詳細',task_path(task.id) %></button></td>
+        <td><button type="button" class="btn btn-outline-warning"><%= link_to '編集',edit_task_path(task.id) %></button></td>
+        <td><button type="button" class="btn btn-outline-danger"><%= link_to '削除',task_path(task.id),method: :delete,data: { confirm: '本当に削除してよろしいですか？'} %></button></td>
     </tr>
     <% end %>
     <%= paginate(@tasks) %>
 </table>
-<%= link_to 'Taskを新規作成する',new_task_path %>
+<button type="button" class="btn btn-outline-danger"><%= link_to 'Taskを新規作成する',new_task_path %></button>
