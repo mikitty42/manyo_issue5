@@ -21,6 +21,21 @@
         <%= form.text_field :content %>
     </div>
     
+    <div class='task_deadline'>
+        <%= form.label :deadline,Task.human_attribute_name(:deadline) %>
+        <%= form.date_field :deadline %>
+    </div>
+    
+    <div class='task_status'>
+        <%= form.label :status %>
+        <%= form.select :status, Task.statuses.keys, {promt: "選択してください"} %>
+    </div>
+    
+    <div class='task_priority'>
+        <%= form.label :priority %>
+        <%= form.select :priority, Task.priorities.keys, {promt: "選択してください"} %>
+    </div>
+    
     <%= form.submit %>
 <% end %>
 
