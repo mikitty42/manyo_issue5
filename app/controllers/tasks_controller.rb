@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
     before_action :authenticate_user, only: [:index]
-    
+
     def index
         @tasks = current_user.tasks.page(params[:page]).per(10).order('created_at DESC')
         if params[:sort_expired]
@@ -74,6 +74,6 @@ class TasksController < ApplicationController
         def task_params
             params.require(:task).permit(:title,:content,:deadline,:status,:priority)
         end
-        
+
 
 end
