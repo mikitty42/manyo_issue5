@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+    before_action :ensure_current_user, only: [:show]
 
     def new
         @user = User.new
@@ -29,5 +30,12 @@ class UsersController < ApplicationController
     def correct_user
         @user = User.find(params[:id])
         redirect_to root_path unless current_user?(@user)
+    end
+    
+    def ensure_current_user
+        if current_user.id != params[:id].to_i
+            flash[:notice] = '権限がありません'
+            redirect_to tasks_path
+        end
     end
 end
