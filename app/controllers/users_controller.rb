@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
     before_action :ensure_current_user, only: [:show]
     before_action :move_to_index, only: [:new]
+    
+    def index
+        @users = User.all
+    end
+    
     def new
         @user = User.new
     end
@@ -20,11 +25,24 @@ class UsersController < ApplicationController
         @tasks = current_user.tasks
     end
     
+    def edit
+        @user = User.find(params[:id])
+    end
+    
+    def update
+        @user = User.find(params[:id])
+        if @user.update(user_params)
+          redirect_to user_path(@user.id), notice: "ブログを編集しました！"
+        else
+          render :edit
+        end
+      end
+    
     
     private
     
     def user_params
-        params.require(:user).permit(:name,:email,:password,:password_confirmation)
+        params.require(:user).permit(:name,:email,:password,:password_confirmation,:admin)
     end
     
 
