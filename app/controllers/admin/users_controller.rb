@@ -3,7 +3,7 @@ class Admin::UsersController < ApplicationController
 
     
     def index
-        @users = User.all.order('created_at DESC')
+        @users = User.eager_load(:tasks)
     end
     
     def new
@@ -18,6 +18,10 @@ class Admin::UsersController < ApplicationController
         else
             render :new
         end
+    end
+    
+    def show
+        @user = User.find(params[:id])
     end
     
     def edit
