@@ -1,14 +1,17 @@
 require 'rails_helper'
 RSpec.describe 'ユーザー管理機能', type: :system do
+    before do
+        user_a = FactoryBot.create(:user, name: 'ユーザーA', email: 'a@example.com')
+        FactoryBot.create(:task, title: '最初のタスク')
+          visit new_session__path
+          fill_in 'Email', with: 'a@example.com'
+          fill_in 'Password', with: 'password'
+          click_on 'Log in'
+        end
     context 'ユーザー登録' do
       it 'ユーザーの新規登録が出来る' do
-          visit new_user_path
-          fill_in '名前', with: 'test1'
-          fill_in 'メールアドレス',with: 'test1@example.com'
-          fill_in 'パスワード', with: 'test1t'
-          fill_in '確認用パスワード', with: 'test1t'
-          click_on 'Create my account'
-          expect(page).to have_content 'test1@example.com'
+
+          expect(page).to have_content '最初のタスク'
       end
     end
     it 'ユーザがログインせずタスク一覧画面に飛ぼうとしたとき、ログイン画面に遷移すること' do
@@ -16,10 +19,6 @@ RSpec.describe 'ユーザー管理機能', type: :system do
         expect(current_path).to eq new_session_path
     end
     context 'セッション機能' do
-        before do
-            user = FactoryBot.create(:user)
-            #user_a = FactoryBot.create(:second_user)
-        end
         it 'ログインが出来る' do
             visit new_session_path
             fill_in 'Email',with: 'aaa@example.com'

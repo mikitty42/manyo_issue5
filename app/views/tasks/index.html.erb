@@ -1,5 +1,5 @@
 <h2>Task一覧画面</h2>
-<div class="task_list">
+<div>
 <button type="button" class="btn btn-outline-info"><%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %></button>
 <button type="button" class="btn btn-outline-primary"><%= link_to "優先順位でソートする", tasks_path(sort_priority: "true") %></button>
 <%= form_with(url: tasks_path,scope: :task,local: true,method: :get) do |form| %>
@@ -19,7 +19,7 @@
     
     <% @tasks.each do |task| %>
     
-    <tr>
+    <tr class="task_list">
         <td><%= task.title %></td>
         <td><%= task.content %></td>
         <td><%= task.user.name %></td>

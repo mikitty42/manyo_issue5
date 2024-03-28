@@ -2,23 +2,25 @@ class TasksController < ApplicationController
     before_action :authenticate_user, only: [:index]
 
     def index
-        @tasks = current_user.tasks.page(params[:page]).per(10).order('created_at DESC')
+        
         if params[:sort_expired]
             @tasks = current_user.tasks.page(params[:page]).per(10).order(deadline: 'DESC')
-        else params[:sort_priority]
+        else  params[:sort_priority]
             @tasks = current_user.tasks.page(params[:page]).per(10).order('priority ASC')
         end
+        
+
         if params[:task].present?
             if params[:task][:title].present? && params[:task][:status].present?
-                @tasks = current_user.tasks.get_by_title(params[:task][:title]).get_by_status(params[:task][:status])
+                @tasks = current_user.tasks.get_by_title(params[:task][:title]).get_by_status(params[:task][:status]).page(params[:page]).per(10)
             elsif params[:task][:title].present?
-                @tasks = current_user.tasks.get_by_title(params[:task][:title])
+                @tasks = current_user.tasks.get_by_title(params[:task][:title]).page(params[:page]).per(10)
             elsif params[:task][:status].present?
-                @tasks = current_user.tasks.get_by_status(params[:task][:status])
-            end
+                @tasks = current_user.tasks.get_by_status(params[:task][:status]).page(params[:page]).per(10)
             end
         end
-        
+        @tasks = current_user.tasks.page(params[:page]).per(10).order(created_at: 'DESC')
+    end
         def new
             @task = Task.new
         end
