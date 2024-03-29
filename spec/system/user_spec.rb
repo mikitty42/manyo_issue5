@@ -1,17 +1,23 @@
 require 'rails_helper'
 RSpec.describe 'ユーザー管理機能', type: :system do
     before do
-        user_a = FactoryBot.create(:user, name: 'ユーザーA', email: 'a@example.com')
+        @user = FactoryBot.create(:user, name: 'ユーザーA', email: 'a@example.com')
         FactoryBot.create(:task, title: '最初のタスク')
-          visit new_session__path
+          visit new_session_path
           fill_in 'Email', with: 'a@example.com'
           fill_in 'Password', with: 'password'
           click_on 'Log in'
         end
     context 'ユーザー登録' do
       it 'ユーザーの新規登録が出来る' do
-
-          expect(page).to have_content '最初のタスク'
+          visit new_user_path
+          fill_in '名前', with: 'ccc'
+          fill_in 'メールアドレス', with: 'ccc@example.com'
+          fill_in 'パスワード', with: 'cccccc'
+          fill_in '確認用パスワード', with: 'cccccc'
+          click_on 'Create my account'
+          expect(page).to have_content 'ユーザーの登録に成功しました'
+          
       end
     end
     it 'ユーザがログインせずタスク一覧画面に飛ぼうとしたとき、ログイン画面に遷移すること' do
@@ -21,21 +27,22 @@ RSpec.describe 'ユーザー管理機能', type: :system do
     context 'セッション機能' do
         it 'ログインが出来る' do
             visit new_session_path
-            fill_in 'Email',with: 'aaa@example.com'
+            fill_in 'Email',with: 'a@example.com'
             fill_in 'Password', with: 'aaaaaa'
             click_on 'Log in'
             expect(page).to have_content 'ログインに成功しました'
         end
             it '自分の詳細画面に飛べる' do
-            visit new_session_path
-            fill_in 'Email',with: 'aaa@example.com'
-            fill_in 'Password', with: 'aaaaaa'
-            click_on 'Log in'
-            expect(current_path).to eq user_path(1)
+                visit new_session_path
+                fill_in 'Email', with: 'a@example.com'
+                fill_in 'Password', with: 'aaaaaa'
+                click_on 'Log in'
+                visit user_path(@user.id)
+                expect(current_path).to eq user_path(@user.id)
         end
         it '一般ユーザが他人の詳細画面に飛ぶとタスク一覧画面に遷移すること' do
             visit new_session_path
-            fill_in 'Email',with: 'aaa@example.com'
+            fill_in 'Email',with: 'a@example.com'
             fill_in 'Password', with: 'aaaaaa'
             click_on 'Log in'
             visit user_path(2)
@@ -44,7 +51,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
         end
         it 'ログアウトが出来る' do
             visit new_session_path
-            fill_in 'Email',with: 'aaa@example.com'
+            fill_in 'Email',with: 'a@example.com'
             fill_in 'Password', with: 'aaaaaa'
             click_on 'Log in'
             click_on 'Logout'
@@ -53,20 +60,20 @@ RSpec.describe 'ユーザー管理機能', type: :system do
     end
     context '管理画面のテスト' do
         before do
-            user_a = FactoryBot.create(:user)
-            user = FactoryBot.create(:third_user)
-        end
-        it '管理ユーザは管理画面にアクセスできること' do
+            user_c = FactoryBot.create(:third_user, name: 'ユーザーC', email: 'c@example.com')
             visit new_session_path
-            fill_in 'Email',with: 'ccc@example.com'
+            fill_in 'Email',with: 'c@example.com'
             fill_in 'Password', with: 'cccccc'
             click_on 'Log in'
+        end
+        it '管理ユーザは管理画面にアクセスできること' do
+
             visit admin_users_path
             expect(current_path).to eq admin_users_path
         end
         it '一般ユーザは管理画面にアクセスできないこと' do
             visit new_session_path
-            fill_in 'Email',with: 'aaa@example.com'
+            fill_in 'Email',with: 'a@example.com'
             fill_in 'Password', with: 'aaaaaa'
             click_on 'Log in'
             visit admin_users_path
@@ -74,10 +81,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
             expect(current_path).to eq root_path
         end
         it '管理ユーザはユーザの新規登録ができること' do
-            visit new_session_path
-            fill_in 'Email',with: 'ccc@example.com'
-            fill_in 'Password', with: 'cccccc'
-            click_on 'Log in'
+
             visit admin_users_path
             click_on 'ユーザーの新規作成'
             fill_in '名前', with: 'test2'
