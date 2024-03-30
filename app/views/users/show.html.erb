@@ -1,0 +1,24 @@
+<h1><%= @user.name %>のページ</h1>
+
+<p>メールアドレス: <%= @user.email %></p>
+
+<table>
+    <tr>
+        <th>タイトル</th>
+        <th>内容</th>
+        <th>投稿者名</th>
+        <th>終了期限</th>
+        <th>ステータス</th>
+        <th>優先順位</th>
+    </tr>
+<% @tasks.each do |task| %>
+    <tr>
+        <td><%= task.title %></td>
+        <td><%= task.content %></td>
+        <td><%= task.user.name %></td>
+        <td><%= task.deadline %></td>
+        <td><%= task.status %></td>
+        <td><%= task.priority %></td>
+    </tr>
+<% end %>
+</table>
