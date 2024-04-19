@@ -5,7 +5,12 @@ FactoryBot.define do
       deadline { '2024-03-01' }
       status { '完了'}
       priority { '高'}
-      association :user
+
+      
+      #after(:build) do |task|
+            #label = create(:label)
+            #task.labellings << build(:labelling, task: task, label: label)
+          #end
   end
   
   factory :second_task, class: Task do
@@ -14,6 +19,7 @@ FactoryBot.define do
       deadline { '2024-02-28'}
       status { '着手'}
       priority { '中'}
-      association :user
+
     end
+
 end
